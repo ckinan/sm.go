@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/ckinan/system-monitor.go/internal"
 )
@@ -9,7 +10,7 @@ import (
 func main() {
 	ram, err := internal.GetRam()
 	if err != nil {
-		fmt.Println(fmt.Errorf("error: %w", err))
+		slog.Error("error getting ram data", "err", err)
 	}
 	fmt.Printf("used memory: %d, available memory: %d, total memory: %d\n", ram.MemUsed, ram.MemAvailable, ram.MemTotal)
 }

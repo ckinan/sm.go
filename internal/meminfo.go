@@ -2,6 +2,7 @@ package internal
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -57,6 +58,9 @@ func GetRam() (Ram, error) {
 
 func extractFieldFromLine(line string) (int, error) {
 	fields := strings.Fields(line)
+	if len(fields) < 2 {
+		return -1, fmt.Errorf("invalid line, expected at least 2 fields, got %v, line: %s", len(fields), line)
+	}
 	intval, err := strconv.Atoi(fields[1])
 	if err != nil {
 		return -1, err
