@@ -12,5 +12,12 @@ func main() {
 	if err != nil {
 		slog.Error("error getting ram data", "err", err)
 	}
+	processes, err := internal.ListProcess()
+	if err != nil {
+		slog.Error("error getting proc data", "err", err)
+	}
 	fmt.Printf("used memory: %d, available memory: %d, total memory: %d\n", ram.MemUsed, ram.MemAvailable, ram.MemTotal)
+	for _, p := range processes {
+		fmt.Printf("\tpid: %v, ppid: %v, name: %v, state: %v, threads: %v, rsskb: %v\n", p.Pid, p.Ppid, p.Name, p.State, p.Threads, p.RssKB)
+	}
 }

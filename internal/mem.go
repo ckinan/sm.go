@@ -2,7 +2,6 @@ package internal
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -39,11 +38,19 @@ func GetRam() (Ram, error) {
 		}
 	}
 
-	memTotalInt, err = extractFieldFromLine(memTotal)
+	memTotalStr, err := extractFieldFromLine(memTotal)
 	if err != nil {
 		return Ram{}, err
 	}
-	memAvailableInt, err = extractFieldFromLine(memAvailable)
+	memTotalInt, err = strconv.Atoi(memTotalStr)
+	if err != nil {
+		return Ram{}, err
+	}
+	memAvailableStr, err := extractFieldFromLine(memAvailable)
+	if err != nil {
+		return Ram{}, err
+	}
+	memAvailableInt, err = strconv.Atoi(memAvailableStr)
 	if err != nil {
 		return Ram{}, err
 	}
@@ -54,16 +61,4 @@ func GetRam() (Ram, error) {
 		MemAvailable: memAvailableInt,
 		MemUsed:      memUsedInt,
 	}, nil
-}
-
-func extractFieldFromLine(line string) (int, error) {
-	fields := strings.Fields(line)
-	if len(fields) < 2 {
-		return -1, fmt.Errorf("invalid line, expected at least 2 fields, got %v, line: %s", len(fields), line)
-	}
-	intval, err := strconv.Atoi(fields[1])
-	if err != nil {
-		return -1, err
-	}
-	return intval, nil
 }
