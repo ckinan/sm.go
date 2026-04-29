@@ -11,10 +11,13 @@ type Model struct {
 	snapCh <-chan collector.Snapshot // read-only channel from the collect
 	ram    internal.Ram
 	procs  []internal.Process
+	height int // terminal height
 }
 
 func New(ch <-chan collector.Snapshot) Model {
-	return Model{snapCh: ch}
+	// height: 24 is a safe fallback
+	// frame is painted right after startup, so this default is almost never actually visible
+	return Model{snapCh: ch, height: 24}
 }
 
 func (m Model) Init() tea.Cmd {

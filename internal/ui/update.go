@@ -25,9 +25,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, waitForSnapshot(m.snapCh)
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "q", "ctrl+c":
+		case "q":
 			return m, tea.Quit
 		}
+	case tea.WindowSizeMsg:
+		// Bubbletea fires this on startup and on every terminal resize.
+		// We only need the height to limit visible rows, width is unused here.
+		m.height = msg.Height
+		return m, nil
 	}
 	return m, nil
 }
