@@ -21,6 +21,11 @@ func Start(ctx context.Context, interval time.Duration) <-chan Snapshot {
 		ticker := time.NewTicker(interval)
 		defer ticker.Stop() // vmlinuz
 
+		// Collect immediately on start, don't wait for first tick
+		if snap, err := collect(); err == nil {
+			ch <- snap
+		}
+
 		for {
 			select {
 			case <-ctx.Done():

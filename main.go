@@ -16,7 +16,7 @@ func main() {
 	defer cancel() // ensure goroutine is always stopped when main() exits
 
 	// start collector - returns a channel immediately, goroutine runs in background
-	snapshotCh := collector.Start(ctx, 2*time.Second)
+	snapshotCh := collector.Start(ctx, 1*time.Second)
 
 	// Read a few snapshots then exit (for now)
 	p := tea.NewProgram(ui.New(snapshotCh), tea.WithAltScreen())
