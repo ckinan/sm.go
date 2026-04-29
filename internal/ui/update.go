@@ -27,6 +27,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case snapshotMsg:
 		snap := collector.Snapshot(msg)
+		m.CPU = msg.CPU
 		m.ram = msg.Ram
 		m.procs = msg.Processes
 

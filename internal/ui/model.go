@@ -19,6 +19,7 @@ const (
 // Model is the bubbletea model. It holds all UI state
 type Model struct {
 	snapCh <-chan collector.Snapshot // read-only channel from the collect
+	CPU    float64
 	ram    internal.Ram
 	procs  []internal.Process
 	height int // terminal height

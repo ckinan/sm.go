@@ -6,9 +6,11 @@ import (
 	"time"
 
 	"github.com/ckinan/sysmon/internal"
+	"github.com/shirou/gopsutil/v4/cpu"
 )
 
 type Snapshot struct {
+	CPU       float64
 	Ram       internal.Ram
 	Processes []internal.Process
 }
@@ -56,6 +58,12 @@ func Start(ctx context.Context, interval time.Duration) <-chan Snapshot {
 }
 
 func collect() (Snapshot, error) {
+	cpuPcts, err := cpu.Percent(0, false)
+	cpu := 0.0
+	if err == nil && len(cpuPcts) > 0 {
+		cpu = cpuPcts[0]
+	}
+
 	ram, err := internal.GetRam()
 	if err != nil {
 		return Snapshot{}, err
@@ -67,6 +75,7 @@ func collect() (Snapshot, error) {
 	}
 
 	return Snapshot{
+		CPU:       cpu,
 		Ram:       ram,
 		Processes: processes,
 	}, nil
