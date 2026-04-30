@@ -79,8 +79,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		snap := collector.Snapshot(msg)
 		m.CPU = msg.CPU
 		m.ram = msg.Ram
+		wasEmpty := len(m.procs) == 0 // first data arrival?
 		m.procs = snap.Processes
 		m.applySort()
+		if wasEmpty {
+			m.table.GotoTop()
+		}
 		return m, waitForSnapshot(m.snapCh)
 	case tea.KeyMsg:
 		prev := m.sortBy

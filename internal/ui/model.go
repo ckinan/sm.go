@@ -3,6 +3,7 @@ package ui
 import (
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/ckinan/sysmon/internal"
 	"github.com/ckinan/sysmon/internal/collector"
 )
@@ -67,9 +68,12 @@ func New(ch <-chan collector.Snapshot) Model {
 		{Title: "RSS", Width: colRSSWidth},
 		{Title: "CmdLine", Width: colCommandWidth},
 	}
+	s := table.DefaultStyles()
+	s.Selected = lipgloss.NewStyle().Reverse(true)
 	t := table.New(
 		table.WithColumns(cols),
 		table.WithFocused(true), // focused = keyboard nav (↑/↓) is active
+		table.WithStyles(s),
 	)
 	return Model{
 		snapCh:   ch,
