@@ -12,7 +12,7 @@ main (the entrypoint)
     v
 watcher (the event loop)
     |
-    |-> statemachine (states and transitions)
+    |-> state (states and transitions)
     |-> events (wait and return signals)
     |-> backend (run instructions based on events)
 ```
@@ -25,7 +25,7 @@ watcher
 watcher.go: the event loop that waits for a signal (an event) and attempts to 
 act on it. this is the orchestrator, the one who glues everything
 
-statemachine.go: holds the current state of the program, and knows about the
+state.go: holds the current state of the program, and knows about the
 transition of the states based on the events
 
 events.go: responsible for receive notifications for specific events that
@@ -52,3 +52,16 @@ talks to swaylock to lock the screen.
 they should meet interface contracts so that synthetic backends and events can
 be used for unit testing
 
+### changelog
+
+- created synthetic notificator glued to the watcher. next: glue the state
+machine
+- glued the state machine. next: create a cli interface that receives arguments
+for:
+  - time to lock
+  - time to displayOff
+  - time to suspend
+  - time to hibernate
+  - time to displayOn
+  then change the synthetic event source nextEvent() function to grab those
+  values instead of hardcoding them
